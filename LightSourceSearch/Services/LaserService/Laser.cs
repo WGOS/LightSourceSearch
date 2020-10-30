@@ -1,4 +1,5 @@
-﻿using LightSourceSearch.Services.Config;
+﻿using System.Threading;
+using LightSourceSearch.Services.Config;
 using LightSourceSearch.Services.Logging;
 using Serilog;
 using Unosquare.RaspberryIO;
@@ -17,9 +18,13 @@ namespace LightSourceSearch.Services.LaserService
         public bool Turned
         {
             get => _pin.Value;
-            set => _pin.Value = value;
+            set
+            {
+                _logger.Information(value ? "Turned on laser" : "Turned off laser");
+                _pin.Value = value;
+            }
         }
-        
+
         public Laser(ILoggerFactory loggerFactory, IEnvConfig envConfig)
         {
             _envConfig = envConfig;
@@ -31,7 +36,7 @@ namespace LightSourceSearch.Services.LaserService
             _logger.Information("Initializing");
             _pin = Pi.Gpio[_envConfig.Get(EnvVar.PinLaser, EnvVar.PinLaserDef)];
             _pin.PinMode = GpioPinDriveMode.Output;
-            
+ 
             _logger.Information($"Pin: {_pin.BcmPin}");
         }
     }

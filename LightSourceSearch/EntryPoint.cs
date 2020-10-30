@@ -30,20 +30,36 @@ namespace LightSourceSearch
         
         public void Run()
         {
-            _logger.Information("Program started");
+            _logger.Information("Application started");
             
             Pi.Init<BootstrapWiringPi>();
             _logger.Information("Raspberry Pi bootstrapped");
-            _speaker.Beep(SpeakerSound.Greet);
             _logger.Information($"Raspberry Model: {Pi.Info.RaspberryPiVersion}");
             
+            _speaker.Initialize();
             _laser.Initialize();
+            
+            _speaker.BeepAsync(SpeakerSound.Greet);
+            _logger.Information("Application ready");
+            
+            ConsoleKeyInfo key;
 
-            _laser.Turned = true;
-            Thread.Sleep(5000);
-            _laser.Turned = false;
+            do
+            {
+                key = Console.ReadKey(true);
+
+                _laser.Turned = key.Key switch
+                {
+                    ConsoleKey.D1 => true,
+                    ConsoleKey.D2 => false,
+                    _ => _laser.Turned
+                };
+                
+                _speaker.BeepAsync(SpeakerSound.Beep);
+            } while (key.Key != ConsoleKey.Enter);
 
             _logger.Information("Exiting");
+            _laser.Turned = false;
             _speaker.Beep(SpeakerSound.Bye);
         }
     }

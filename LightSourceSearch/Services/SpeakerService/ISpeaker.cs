@@ -5,6 +5,7 @@ namespace LightSourceSearch.Services.Speaker
 {
     public interface ISpeaker
     {
+        void Initialize();
         void Beep(SpeakerSound sound);
         void Beep(List<SpeakerSound> sounds);
         Task BeepAsync(SpeakerSound sound);

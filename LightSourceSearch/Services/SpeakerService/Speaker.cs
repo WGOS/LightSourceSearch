@@ -11,36 +11,40 @@ namespace LightSourceSearch.Services.Speaker
 {
     public class Speaker : ISpeaker
     {
-        private readonly int _speakerPin;
+        private GpioPin _pin;
+        private readonly IEnvConfig _envConfig;
         private readonly ILogger _logger;
 
         public Speaker(ILoggerFactory loggerFactory, IEnvConfig envConfig)
         {
+            _envConfig = envConfig;
             _logger = loggerFactory.GetLogger("Speaker");
-            _speakerPin = envConfig.Get(EnvVar.PinSpeaker, EnvVar.PinSpeakerDef);
-            
-            _logger.Information($"Pin: {_speakerPin}");
         }
-        
+
+        public void Initialize()
+        {
+            _pin = (GpioPin) Pi.Gpio[_envConfig.Get(EnvVar.PinSpeaker, EnvVar.PinSpeakerDef)];
+            _logger.Information($"Pin: {_pin.BcmPin}");
+        }
+
         public void Beep(SpeakerSound sound)
         {
-            var speaker = (GpioPin) Pi.Gpio[_speakerPin];
             var currentTone = sound.Tone;
             
             for (var i = 0; i < sound.Repeat; i++)
             {
-                speaker.SoftToneFrequency = currentTone;
+                _pin.SoftToneFrequency = currentTone;
                 Thread.Sleep(sound.Length);
 
                 currentTone += sound.Increase;
 
                 if (sound.Delay <= 0) continue;
                 
-                speaker.SoftToneFrequency = 0;
+                _pin.SoftToneFrequency = 0;
                 Thread.Sleep(sound.Delay);
             }
             
-            speaker.SoftToneFrequency = 0;
+            _pin.SoftToneFrequency = 0;
             if(sound.SeqDelay > 0)
                 Thread.Sleep(sound.SeqDelay);
         }
