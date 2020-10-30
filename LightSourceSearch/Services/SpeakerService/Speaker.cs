@@ -2,8 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LightSourceSearch.Services.Config;
+using LightSourceSearch.Services.Logging;
+using Serilog;
 using Unosquare.RaspberryIO;
-using Unosquare.RaspberryIO.Abstractions;
 using Unosquare.WiringPi;
 
 namespace LightSourceSearch.Services.Speaker
@@ -11,10 +12,14 @@ namespace LightSourceSearch.Services.Speaker
     public class Speaker : ISpeaker
     {
         private readonly int _speakerPin;
-        
-        public Speaker(IEnvConfig envConfig)
+        private readonly ILogger _logger;
+
+        public Speaker(ILoggerFactory loggerFactory, IEnvConfig envConfig)
         {
+            _logger = loggerFactory.GetLogger("Speaker");
             _speakerPin = envConfig.Get(EnvVar.PinSpeaker, EnvVar.PinSpeakerDef);
+            
+            _logger.Information($"Pin: {_speakerPin}");
         }
         
         public void Beep(SpeakerSound sound)

@@ -5,6 +5,8 @@ services:
     image: mcr.microsoft.com/dotnet/core/runtime
     environment:
       - "LSS_LOG_FILE=true"
+      - "LSS_PIN_SPEAKER=16"
+      - "LSS_PIN_LASER=23"
       - "TERM=xterm-256color"
     volumes:
       - ".:/app"

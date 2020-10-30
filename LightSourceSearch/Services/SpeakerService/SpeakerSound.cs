@@ -35,10 +35,21 @@
             Delay = 40,
             Increase = -100
         };
-        public static readonly SpeakerSound Error = new SpeakerSound(350, 100)
+        public static readonly SpeakerSound Error = new SpeakerSound(250, 100)
         {
             Repeat = 3,
             Delay = 40
+        };
+        public static readonly SpeakerSound CritError = new SpeakerSound(4000, 200)
+        {
+            Repeat = 4,
+            Delay = 100
+        };
+        public static readonly SpeakerSound Warn = new SpeakerSound(100, 100)
+        {
+            Repeat = 2,
+            Delay = 40,
+            Increase = 50
         };
     }
 }

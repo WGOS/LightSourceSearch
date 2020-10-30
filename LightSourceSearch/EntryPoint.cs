@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LightSourceSearch.Container;
 using LightSourceSearch.Services.Config;
+using LightSourceSearch.Services.LaserService;
 using LightSourceSearch.Services.Logging;
 using LightSourceSearch.Services.Speaker;
 using Serilog;
@@ -16,12 +17,14 @@ namespace LightSourceSearch
     {
         private readonly IEnvConfig _envConfig;
         private readonly ISpeaker _speaker;
+        private readonly ILaser _laser;
         private readonly ILogger _logger;
 
-        public EntryPoint(ILoggerFactory loggerFactory, IEnvConfig envConfig, ISpeaker speaker)
+        public EntryPoint(ILoggerFactory loggerFactory, IEnvConfig envConfig, ISpeaker speaker, ILaser laser)
         {
             _envConfig = envConfig;
             _speaker = speaker;
+            _laser = laser;
             _logger = loggerFactory.GetLogger("Main");
         }
         
@@ -31,26 +34,17 @@ namespace LightSourceSearch
             
             Pi.Init<BootstrapWiringPi>();
             _logger.Information("Raspberry Pi bootstrapped");
+            _speaker.Beep(SpeakerSound.Greet);
+            _logger.Information($"Raspberry Model: {Pi.Info.RaspberryPiVersion}");
             
-            _speaker.BeepAsync(SpeakerSound.Greet);
+            _laser.Initialize();
 
-            _logger.Information("Environment variables:");
-            _logger.Information($"TERM={_envConfig.Get("TERM", "{unset}")}");
-            _logger.Information($"{EnvVar.PinSpeaker}={_envConfig.Get(EnvVar.PinSpeaker, EnvVar.PinSpeakerDef)}");
-            
-            Thread.Sleep(1000);
-            var sd = DateTime.Now;
-            var sound = new SpeakerSound(100, 20)
-            {
-                Delay = 5
-            };
-            
-            while (DateTime.Now - sd <= TimeSpan.FromMilliseconds(10000))
-            {
-                _speaker.Beep(sound);
-            }
+            _laser.Turned = true;
+            Thread.Sleep(5000);
+            _laser.Turned = false;
 
             _logger.Information("Exiting");
+            _speaker.Beep(SpeakerSound.Bye);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LightSourceSearch.Services.Config;
+using LightSourceSearch.Services.LaserService;
 using LightSourceSearch.Services.Logging;
 using LightSourceSearch.Services.Speaker;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ namespace LightSourceSearch.Services
             serviceCollection.AddSingleton<ILoggerFactory, LoggerFactory>();
             serviceCollection.AddSingleton<IEnvConfig, EnvConfig>();
             serviceCollection.AddSingleton<ISpeaker, Speaker.Speaker>();
+            serviceCollection.AddSingleton<ILaser, Laser>();
         }
     }
 }
