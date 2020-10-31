@@ -6,7 +6,7 @@ using LightSourceSearch.Container;
 using LightSourceSearch.Services.Config;
 using LightSourceSearch.Services.LaserService;
 using LightSourceSearch.Services.Logging;
-using LightSourceSearch.Services.Speaker;
+using LightSourceSearch.Services.SpeakerService;
 using Serilog;
 using Unosquare.RaspberryIO;
 using Unosquare.WiringPi;

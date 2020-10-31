@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LightSourceSearch.Services.Speaker
+namespace LightSourceSearch.Services.SpeakerService
 {
     public interface ISpeaker
     {

@@ -21,7 +21,7 @@ namespace LightSourceSearch.Services.Config
             var sVal = Environment.GetEnvironmentVariable(env);
             if (sVal == null)
                 return defValue;
-
+            
             T val;
 
             try

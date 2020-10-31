@@ -1,4 +1,4 @@
-﻿namespace LightSourceSearch.Services.Speaker
+﻿namespace LightSourceSearch.Services.SpeakerService
 {
     public class SpeakerSound
     {
@@ -26,13 +26,13 @@
         public static readonly SpeakerSound Greet = new SpeakerSound(600, 100)
         {
             Repeat = 3,
-            Delay = 40,
+            Delay = 20,
             Increase = 100
         };
         public static readonly SpeakerSound Bye = new SpeakerSound(600, 100)
         {
             Repeat = 3,
-            Delay = 40,
+            Delay = 20,
             Increase = -100
         };
         public static readonly SpeakerSound Error = new SpeakerSound(250, 100)

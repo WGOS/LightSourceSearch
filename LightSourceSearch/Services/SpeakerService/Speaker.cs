@@ -7,7 +7,7 @@ using Serilog;
 using Unosquare.RaspberryIO;
 using Unosquare.WiringPi;
 
-namespace LightSourceSearch.Services.Speaker
+namespace LightSourceSearch.Services.SpeakerService
 {
     public class Speaker : ISpeaker
     {
@@ -23,6 +23,7 @@ namespace LightSourceSearch.Services.Speaker
 
         public void Initialize()
         {
+            _logger.Information("Initializing");
             _pin = (GpioPin) Pi.Gpio[_envConfig.Get(EnvVar.PinSpeaker, EnvVar.PinSpeakerDef)];
             _logger.Information($"Pin: {_pin.BcmPin}");
         }
