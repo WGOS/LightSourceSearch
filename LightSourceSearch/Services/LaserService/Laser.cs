@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using LightSourceSearch.Services.Config;
+using LightSourceSearch.Misc;
 using LightSourceSearch.Services.Logging;
 using Serilog;
 using Unosquare.RaspberryIO;
@@ -10,10 +10,8 @@ namespace LightSourceSearch.Services.LaserService
 {
     public class Laser : ILaser
     {
-        
         private IGpioPin _pin;
         private readonly ILogger _logger;
-        private readonly IEnvConfig _envConfig;
 
         public bool Turned
         {
@@ -25,16 +23,15 @@ namespace LightSourceSearch.Services.LaserService
             }
         }
 
-        public Laser(ILoggerFactory loggerFactory, IEnvConfig envConfig)
+        public Laser(ILoggerFactory loggerFactory)
         {
-            _envConfig = envConfig;
             _logger = loggerFactory.GetLogger("Laser");
         }
         
         public void Initialize()
         {
             _logger.Information("Initializing");
-            _pin = Pi.Gpio[_envConfig.Get(EnvVar.PinLaser, EnvVar.PinLaserDef)];
+            _pin = Pi.Gpio[EnvVar.LaserPin.Value];
             _pin.PinMode = GpioPinDriveMode.Output;
  
             _logger.Information($"Pin: {_pin.BcmPin}");

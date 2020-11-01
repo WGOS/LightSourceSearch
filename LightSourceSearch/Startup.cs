@@ -1,7 +1,6 @@
 ﻿using System;
 using LightSourceSearch.Container;
 using LightSourceSearch.Services;
-using LightSourceSearch.Services.Config;
 using LightSourceSearch.Services.LaserService;
 using LightSourceSearch.Services.Logging;
 using LightSourceSearch.Services.SpeakerService;
@@ -14,7 +13,6 @@ namespace LightSourceSearch
         public void RegisterServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<ILoggerFactory, LoggerFactory>();
-            serviceCollection.AddSingleton<IEnvConfig, EnvConfig>();
             serviceCollection.AddSingleton<ISpeaker, Speaker>();
             serviceCollection.AddSingleton<ILaser, Laser>();
         }

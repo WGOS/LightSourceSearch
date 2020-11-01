@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using LightSourceSearch.Services.Config;
+using LightSourceSearch.Misc;
 using LightSourceSearch.Services.Logging;
 using Serilog;
 using Unosquare.RaspberryIO;
@@ -12,19 +12,17 @@ namespace LightSourceSearch.Services.SpeakerService
     public class Speaker : ISpeaker
     {
         private GpioPin _pin;
-        private readonly IEnvConfig _envConfig;
         private readonly ILogger _logger;
 
-        public Speaker(ILoggerFactory loggerFactory, IEnvConfig envConfig)
+        public Speaker(ILoggerFactory loggerFactory)
         {
-            _envConfig = envConfig;
             _logger = loggerFactory.GetLogger("Speaker");
         }
 
         public void Initialize()
         {
             _logger.Information("Initializing");
-            _pin = (GpioPin) Pi.Gpio[_envConfig.Get(EnvVar.PinSpeaker, EnvVar.PinSpeakerDef)];
+            _pin = (GpioPin) Pi.Gpio[EnvVar.SpeakerPin.Value];
             _logger.Information($"Pin: {_pin.BcmPin}");
         }
 

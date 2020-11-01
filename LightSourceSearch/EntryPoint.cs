@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using LightSourceSearch.Container;
-using LightSourceSearch.Services.Config;
+using LightSourceSearch.Misc;
 using LightSourceSearch.Services.LaserService;
 using LightSourceSearch.Services.Logging;
 using LightSourceSearch.Services.SpeakerService;
@@ -15,14 +15,12 @@ namespace LightSourceSearch
 {
     internal class EntryPoint : IContainerEntryPoint
     {
-        private readonly IEnvConfig _envConfig;
         private readonly ISpeaker _speaker;
         private readonly ILaser _laser;
         private readonly ILogger _logger;
 
-        public EntryPoint(ILoggerFactory loggerFactory, IEnvConfig envConfig, ISpeaker speaker, ILaser laser)
+        public EntryPoint(ILoggerFactory loggerFactory, ISpeaker speaker, ILaser laser)
         {
-            _envConfig = envConfig;
             _speaker = speaker;
             _laser = laser;
             _logger = loggerFactory.GetLogger("Main");
@@ -30,7 +28,9 @@ namespace LightSourceSearch
         
         public void Run()
         {
+            _logger.Information($"SPK: {EnvVar.SpeakerPin.Value}");
             _logger.Information("Application started");
+            return;
             
             Pi.Init<BootstrapWiringPi>();
             _logger.Information("Raspberry Pi bootstrapped");
