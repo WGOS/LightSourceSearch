@@ -25,9 +25,7 @@ namespace LightSourceSearch
 
         public void Run()
         {
-            _logger.Information($"SPK: {EnvVar.SpeakerPin.Value}");
             _logger.Information("Application started");
-            return;
 
             Pi.Init<BootstrapWiringPi>();
             _logger.Information("Raspberry Pi bootstrapped");
