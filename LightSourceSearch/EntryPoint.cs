@@ -31,6 +31,7 @@ namespace LightSourceSearch
             _logger.Information("Raspberry Pi bootstrapped");
             _logger.Information($"Raspberry Model: {Pi.Info.RaspberryPiVersion}");
             _logger.Information($"Debug mode: {EnvVar.DebugMode.Value}");
+            _logger.Debug($"TERM={EnvVar.Get<string>("TERM", null).Value}");
 
             _speaker.Initialize();
             _laser.Initialize();

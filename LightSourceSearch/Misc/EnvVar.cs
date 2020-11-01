@@ -10,12 +10,12 @@ namespace LightSourceSearch.Misc
     /// <typeparam name="T">Type of environment variable. Should be a basic type</typeparam>
     public class EnvVar<T>
     {
-        private static readonly Dictionary<string, EnvVar<T>> Vars = new Dictionary<string, EnvVar<T>>();
+        internal static readonly Dictionary<string, EnvVar<T>> Vars = new Dictionary<string, EnvVar<T>>();
         private readonly TypeConverter _converter;
 
         private readonly T _defValue;
 
-        private EnvVar(string name, T defaultValue)
+        internal EnvVar(string name, T defaultValue)
         {
             Name = name;
             _defValue = defaultValue;
@@ -54,23 +54,6 @@ namespace LightSourceSearch.Misc
 
             set => Environment.SetEnvironmentVariable(Name, value.ToString());
         }
-
-        /// <summary>
-        ///     Get variable
-        /// </summary>
-        /// <param name="name">Name of variable</param>
-        /// <param name="defaultValue">Default value of environment</param>
-        /// <returns></returns>
-        public static EnvVar<T> Get(string name, T defaultValue)
-        {
-            if (Vars.ContainsKey(name))
-                return Vars[name];
-
-            var envVar = new EnvVar<T>(name, defaultValue);
-            Vars.Add(name, envVar);
-
-            return envVar;
-        }
     }
 
     /// <summary>
@@ -79,28 +62,45 @@ namespace LightSourceSearch.Misc
     public static class EnvVar
     {
         /// <summary>
+        ///     Get variable
+        /// </summary>
+        /// <param name="name">Name of variable</param>
+        /// <param name="defaultValue">Default value of environment</param>
+        /// <returns></returns>
+        public static EnvVar<T> Get<T>(string name, T defaultValue)
+        {
+            if (EnvVar<T>.Vars.ContainsKey(name))
+                return EnvVar<T>.Vars[name];
+            
+            var envVar = new EnvVar<T>(name, defaultValue);
+            EnvVar<T>.Vars.Add(name, envVar);
+
+            return envVar;
+        }
+        
+        /// <summary>
         ///     Speaker pin number
         /// </summary>
-        public static readonly EnvVar<int> SpeakerPin = EnvVar<int>.Get("LSS_PIN_SPEAKER", 24);
+        public static readonly EnvVar<int> SpeakerPin = Get("LSS_PIN_SPEAKER", 24);
 
         /// <summary>
         ///     Laser pin number
         /// </summary>
-        public static readonly EnvVar<int> LaserPin = EnvVar<int>.Get("LSS_PIN_LASER", 23);
+        public static readonly EnvVar<int> LaserPin = Get("LSS_PIN_LASER", 23);
 
         /// <summary>
         ///     File logging setting
         /// </summary>
-        public static readonly EnvVar<bool> LogToFile = EnvVar<bool>.Get("LSS_LOG_FILE", false);
+        public static readonly EnvVar<bool> LogToFile = Get("LSS_LOG_FILE", false);
         
         /// <summary>
         ///     Debug mode
         /// </summary>
-        public static readonly EnvVar<bool> DebugMode = EnvVar<bool>.Get("LSS_DEBUG", false);
+        public static readonly EnvVar<bool> DebugMode = Get("LSS_DEBUG", false);
         
         /// <summary>
         ///     Disable sounds if true
         /// </summary>
-        public static readonly EnvVar<bool> SilentMode = EnvVar<bool>.Get("LSS_SILENT", false);
+        public static readonly EnvVar<bool> SilentMode = Get("LSS_SILENT", false);
     }
 }
