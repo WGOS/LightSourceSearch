@@ -11,8 +11,8 @@ namespace LightSourceSearch.Services.SpeakerService
 {
     public class Speaker : ISpeaker
     {
-        private GpioPin _pin;
         private readonly ILogger _logger;
+        private GpioPin _pin;
 
         public Speaker(ILoggerFactory loggerFactory)
         {
@@ -29,7 +29,7 @@ namespace LightSourceSearch.Services.SpeakerService
         public void Beep(SpeakerSound sound)
         {
             var currentTone = sound.Tone;
-            
+
             for (var i = 0; i < sound.Repeat; i++)
             {
                 _pin.SoftToneFrequency = currentTone;
@@ -38,13 +38,13 @@ namespace LightSourceSearch.Services.SpeakerService
                 currentTone += sound.Increase;
 
                 if (sound.Delay <= 0) continue;
-                
+
                 _pin.SoftToneFrequency = 0;
                 Thread.Sleep(sound.Delay);
             }
-            
+
             _pin.SoftToneFrequency = 0;
-            if(sound.SeqDelay > 0)
+            if (sound.SeqDelay > 0)
                 Thread.Sleep(sound.SeqDelay);
         }
 
@@ -57,7 +57,7 @@ namespace LightSourceSearch.Services.SpeakerService
         {
             await Task.Run(() => Beep(sound));
         }
-        
+
         public async Task BeepAsync(List<SpeakerSound> sounds)
         {
             await Task.Run(() => Beep(sounds));

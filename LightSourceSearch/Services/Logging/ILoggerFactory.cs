@@ -6,5 +6,4 @@ namespace LightSourceSearch.Services.Logging
     {
         ILogger GetLogger(string name, string format = null);
     }
-
 }

@@ -8,19 +8,19 @@ namespace LightSourceSearch.Container
         where TContainerEntryPoint : class, IContainerEntryPoint
     {
         private IServiceProvider _serviceProvider;
-        
+
         public void Initialize()
         {
             var container = new ServiceCollection();
             var startupInstance = new TStartup();
-        
+
             container.AddSingleton<IContainerEntryPoint, TContainerEntryPoint>();
             startupInstance.RegisterServices(container);
-        
+
             _serviceProvider = container.BuildServiceProvider();
             startupInstance.ConfigureServices(_serviceProvider);
         }
-        
+
         public void Run()
         {
             var entryPoint = _serviceProvider.GetService<IContainerEntryPoint>();

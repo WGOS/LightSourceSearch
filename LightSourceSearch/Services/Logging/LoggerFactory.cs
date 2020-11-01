@@ -1,5 +1,4 @@
-﻿using System;
-using LightSourceSearch.Misc;
+﻿using LightSourceSearch.Misc;
 using Serilog;
 
 namespace LightSourceSearch.Services.Logging
@@ -23,9 +22,8 @@ namespace LightSourceSearch.Services.Logging
 
             if (EnvVar.LogToFile.Value)
                 factory.WriteTo.File("log.txt", outputTemplate: format);
-            
+
             return factory.CreateLogger();
         }
     }
-
 }

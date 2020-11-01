@@ -1,6 +1,5 @@
 ﻿using System;
 using LightSourceSearch.Container;
-using LightSourceSearch.Services;
 using LightSourceSearch.Services.LaserService;
 using LightSourceSearch.Services.Logging;
 using LightSourceSearch.Services.SpeakerService;
@@ -19,7 +18,6 @@ namespace LightSourceSearch
 
         public void ConfigureServices(IServiceProvider serviceProvider)
         {
-            
         }
     }
 }

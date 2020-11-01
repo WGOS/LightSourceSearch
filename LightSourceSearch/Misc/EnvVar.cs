@@ -5,22 +5,30 @@ using System.ComponentModel;
 namespace LightSourceSearch.Misc
 {
     /// <summary>
-    /// Get or set environment variable
+    ///     Get or set environment variable
     /// </summary>
     /// <typeparam name="T">Type of environment variable. Should be a basic type</typeparam>
     public class EnvVar<T>
     {
         private static readonly Dictionary<string, EnvVar<T>> Vars = new Dictionary<string, EnvVar<T>>();
-        
-        private readonly T _defValue;
         private readonly TypeConverter _converter;
 
+        private readonly T _defValue;
+
+        private EnvVar(string name, T defaultValue)
+        {
+            Name = name;
+            _defValue = defaultValue;
+            _converter = TypeDescriptor.GetConverter(typeof(T));
+        }
+
         /// <summary>
-        /// Name of environment variable
+        ///     Name of environment variable
         /// </summary>
         public string Name { get; }
+
         /// <summary>
-        /// Value of environment variable
+        ///     Value of environment variable
         /// </summary>
         public T Value
         {
@@ -29,7 +37,7 @@ namespace LightSourceSearch.Misc
                 var sVal = Environment.GetEnvironmentVariable(Name);
                 if (sVal == null)
                     return _defValue;
-            
+
                 T val;
 
                 try
@@ -43,19 +51,12 @@ namespace LightSourceSearch.Misc
 
                 return val;
             }
-            
+
             set => Environment.SetEnvironmentVariable(Name, value.ToString());
         }
 
-        private EnvVar(string name, T defaultValue)
-        {
-            Name = name;
-            _defValue = defaultValue;
-            _converter = TypeDescriptor.GetConverter(typeof(T));
-        }
-
         /// <summary>
-        /// Get variable
+        ///     Get variable
         /// </summary>
         /// <param name="name">Name of variable</param>
         /// <param name="defaultValue">Default value of environment</param>
@@ -64,7 +65,7 @@ namespace LightSourceSearch.Misc
         {
             if (Vars.ContainsKey(name))
                 return Vars[name];
-            
+
             var envVar = new EnvVar<T>(name, defaultValue);
             Vars.Add(name, envVar);
 
@@ -73,20 +74,22 @@ namespace LightSourceSearch.Misc
     }
 
     /// <summary>
-    /// Pre-defined environment variables
+    ///     Pre-defined environment variables
     /// </summary>
     public static class EnvVar
     {
         /// <summary>
-        /// Speaker pin number
+        ///     Speaker pin number
         /// </summary>
         public static readonly EnvVar<int> SpeakerPin = EnvVar<int>.Get("LSS_PIN_SPEAKER", 24);
+
         /// <summary>
-        /// Laser pin number
+        ///     Laser pin number
         /// </summary>
         public static readonly EnvVar<int> LaserPin = EnvVar<int>.Get("LSS_PIN_LASER", 23);
+
         /// <summary>
-        /// File logging setting
+        ///     File logging setting
         /// </summary>
         public static readonly EnvVar<bool> LogToFile = EnvVar<bool>.Get("LSS_PIN_LASER", false);
     }
