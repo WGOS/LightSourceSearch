@@ -44,7 +44,7 @@ namespace LightSourceSearch.Misc
                 {
                     val = (T) _converter.ConvertFromString(sVal);
                 }
-                catch (Exception e)
+                catch
                 {
                     val = _defValue;
                 }
@@ -91,6 +91,16 @@ namespace LightSourceSearch.Misc
         /// <summary>
         ///     File logging setting
         /// </summary>
-        public static readonly EnvVar<bool> LogToFile = EnvVar<bool>.Get("LSS_PIN_LASER", false);
+        public static readonly EnvVar<bool> LogToFile = EnvVar<bool>.Get("LSS_LOG_FILE", false);
+        
+        /// <summary>
+        ///     Debug mode
+        /// </summary>
+        public static readonly EnvVar<bool> DebugMode = EnvVar<bool>.Get("LSS_DEBUG", false);
+        
+        /// <summary>
+        ///     Disable sounds if true
+        /// </summary>
+        public static readonly EnvVar<bool> SilentMode = EnvVar<bool>.Get("LSS_SILENT", false);
     }
 }

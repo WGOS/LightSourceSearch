@@ -13,6 +13,7 @@ namespace LightSourceSearch.Services.SpeakerService
     {
         private readonly ILogger _logger;
         private GpioPin _pin;
+        private bool _isSilent;
 
         public Speaker(ILoggerFactory loggerFactory)
         {
@@ -24,10 +25,17 @@ namespace LightSourceSearch.Services.SpeakerService
             _logger.Information("Initializing");
             _pin = (GpioPin) Pi.Gpio[EnvVar.SpeakerPin.Value];
             _logger.Information($"Pin: {_pin.BcmPin}");
+
+            _isSilent = EnvVar.SilentMode.Value;
+            if(_isSilent)
+                _logger.Warning("APPLICATION IS IN SILENT MODE!");
         }
 
         public void Beep(SpeakerSound sound)
         {
+            if (_isSilent)
+                return;
+
             var currentTone = sound.Tone;
 
             for (var i = 0; i < sound.Repeat; i++)

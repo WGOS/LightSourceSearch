@@ -7,6 +7,7 @@ services:
       - "LSS_LOG_FILE=true"
       - "LSS_PIN_SPEAKER=24"
       - "LSS_PIN_LASER=23"
+      - "LSS_DEBUG=true"
       - "TERM=xterm-256color"
     volumes:
       - ".:/app"

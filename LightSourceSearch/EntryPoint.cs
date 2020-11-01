@@ -30,6 +30,7 @@ namespace LightSourceSearch
             Pi.Init<BootstrapWiringPi>();
             _logger.Information("Raspberry Pi bootstrapped");
             _logger.Information($"Raspberry Model: {Pi.Info.RaspberryPiVersion}");
+            _logger.Information($"Debug mode: {EnvVar.DebugMode.Value}");
 
             _speaker.Initialize();
             _laser.Initialize();
